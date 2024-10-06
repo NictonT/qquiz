@@ -22,7 +22,7 @@ class FileManager {
 
         const saveButton = document.getElementById('saveButton');
         if (saveButton) {
-            saveButton.addEventListener('click', this.saveFile.bind(this));
+            saveButton.addEventListener('click', () => this.saveFile());
         }
     }
 
@@ -297,13 +297,13 @@ ${contentToExecute.join('\n')}`);
 
 const fileManager = new FileManager();
 
-window.showAddFileModal = fileManager.showAddFileModal.bind(fileManager);
-window.closeAddFileModal = fileManager.closeAddFileModal.bind(fileManager);
-window.addNewFile = fileManager.addNewFile.bind(fileManager);
-window.editFile = fileManager.editFile.bind(fileManager);
-window.saveFile = fileManager.saveFile.bind(fileManager);
-window.executeFile = fileManager.executeFile.bind(fileManager);
-window.openFolder = fileManager.openFolder.bind(fileManager);
-window.deleteFile = fileManager.deleteFile.bind(fileManager);
-window.showRenameFileModal = fileManager.showRenameFileModal.bind(fileManager);
-window.closeRenameFileModal = fileManager.closeRenameFileModal.bind(fileManager);
+window.showAddFileModal = () => fileManager.showAddFileModal();
+window.closeAddFileModal = () => fileManager.closeAddFileModal();
+window.addNewFile = () => fileManager.addNewFile();
+window.editFile = (id) => fileManager.editFile(id);
+window.saveFile = () => fileManager.saveFile();
+window.executeFile = (id) => fileManager.executeFile(id);
+window.openFolder = (id) => fileManager.openFolder(id);
+window.deleteFile = (id) => fileManager.deleteFile(id);
+window.showRenameFileModal = (id) => fileManager.showRenameFileModal(id);
+window.closeRenameFileModal = () => fileManager.closeRenameFileModal();
