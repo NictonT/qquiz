@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="slide active" id="mainPage">
+        <div class="header">
+            <h1>Quiz Application</h1>
+            <div class="toggle-container">
+                <input type="checkbox" id="nightModeToggle" class="toggle" />
+                <label for="nightModeToggle" class="toggle-label">Night Mode</label>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Enter your questions in JSON format</h2>
+            <textarea id="jsonInput" rows="10" placeholder='{
+                "question": "What is the capital city of Japan?",
+                "answers": {
+                  "A": "Beijing",
+                  "B": "Seoul",
+                  "C": "Tokyo",
+                  "D": "Bangkok",
+                  "E": "Manila"
+                },
+                "correctAnswer": "C"
+              }'></textarea>
+            <button class="button primary" id="executeButton">Execute</button>
+            <button class="button secondary" onclick="goToFilesPage()">Files</button>
+        </div>
+    </div>
+
+    <div class="slide hidden" id="quizPage">
+        <div class="progress-container">
+            <div class="file-name" id="fileNameDisplay"></div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+            <div class="question-count" id="questionCount"></div>
+        </div>
+        <div class="question-card">
+            <div id="questionArea">
+                <button class="help-button" onclick="showAnswer()">?</button>
+                <h2 id="questionText"></h2>
+            </div>
+            <div id="answersContainer"></div>
+        </div>
+        <div class="button-container">
+            <button class="button primary" onclick="submitAnswer()">Submit</button>
+            <button class="button secondary" onclick="skipQuestion()">Skip</button>
+            <button class="button secondary hidden" onclick="goToResultPage()">Return to Score Page</button>
+        </div>
+    </div>
+
+    <div class="slide hidden" id="resultPage">
+        <div class="result-content">
+            <h2>Quiz Results</h2>
+            <div id="scoreText"></div>
+            <div id="scoreGraphics">
+                <div class="score-section" onclick="toggleCorrectList()">
+                    <div class="score-icon correct">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="score-label">Correct Answers</div>
+                    <div class="circle-chart correct" id="correctPercentage" data-percentage="0 Correct" style="--percentage:0;"></div>
+                </div>
+                <div class="score-section" onclick="toggleWrongList()">
+                    <div class="score-icon wrong">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="score-label">Wrong/Skipped Answers</div>
+                    <div class="circle-chart wrong" id="wrongPercentage" data-percentage="0 Wrong/Skipped" style="--percentage:0;"></div>
+                </div>
+            </div>
+            <div id="correctList" class="hidden answer-list"></div>
+            <div id="wrongList" class="hidden answer-list"></div>
+        </div>
+        <div class="button-container">
+            <button class="button primary" onclick="restartQuiz()">Restart Quiz</button>
+            <button class="button secondary" onclick="redoWrongAnswers()">Redo Wrong</button>
+            <button class="button secondary" onclick="goToHomePage()">Home Page</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</body>
+</html>
