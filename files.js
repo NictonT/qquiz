@@ -46,19 +46,55 @@ class FileManager {
             fileElement.innerHTML = `
                 <div>
                     <span>${fileTypeEmoji} ${file.name}</span>
-                    <button class="icon-button" onclick="fileManager.showRenameFileModal('${file.id}')">✏️</button>
+                    <button class="icon-button rename-button" data-id="${file.id}">✏️</button>
                 </div>
                 <div>
                     ${file.type === 'JSON'
-                        ? `<button class="button primary" onclick="fileManager.editFile('${file.id}')">Edit</button>`
-                        : `<button class="button primary" onclick="fileManager.openFolder('${file.id}')">Open</button>`
+                        ? `<button class="button primary edit-button" data-id="${file.id}">Edit</button>`
+                        : `<button class="button primary open-button" data-id="${file.id}">Open</button>`
                     }
-                    <button class="button secondary" onclick="fileManager.executeFile('${file.id}')">Execute</button>
-                    <button class="button" onclick="fileManager.deleteFile('${file.id}')">Delete</button>
+                    <button class="button secondary execute-button" data-id="${file.id}">Execute</button>
+                    <button class="button delete-button" data-id="${file.id}">Delete</button>
                 </div>
             `;
             this.filesContainer.appendChild(fileElement);
         });
+
+        this.filesContainer.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                this.editFile(id);
+            });
+        });
+
+        this.filesContainer.querySelectorAll('.rename-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                this.showRenameFileModal(id);
+            });
+        });
+
+        this.filesContainer.querySelectorAll('.open-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                this.openFolder(id);
+            });
+        });
+
+        this.filesContainer.querySelectorAll('.execute-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                this.executeFile(id);
+            });
+        });
+
+        this.filesContainer.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const id = event.target.getAttribute('data-id');
+                this.deleteFile(id);
+            });
+        });
+
         this.updatePageTitle();
     }
 
@@ -271,6 +307,3 @@ window.openFolder = fileManager.openFolder.bind(fileManager);
 window.deleteFile = fileManager.deleteFile.bind(fileManager);
 window.showRenameFileModal = fileManager.showRenameFileModal.bind(fileManager);
 window.closeRenameFileModal = fileManager.closeRenameFileModal.bind(fileManager);
-window.renameFile = fileManager.renameFile.bind(fileManager);
-window.toggleFileList = fileManager.toggleFileList.bind(fileManager);
-window.goBack = fileManager.goBack.bind(fileManager);
