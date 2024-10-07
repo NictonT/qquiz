@@ -11,18 +11,27 @@ class FileManager {
         this.renameFileModal = document.getElementById('renameFileModal');
         this.nightModeToggle = document.getElementById('nightModeToggleFiles');
         this.currentFile = null;
+        this.attachEventListeners();
+        this.displayFiles();
+    }
+
+    attachEventListeners() {
         if (this.nightModeToggle) {
-            this.nightModeToggle.addEventListener('change', () => this.toggleNightMode());
+            this.nightModeToggle.addEventListener('change', this.toggleNightMode.bind(this));
             if (localStorage.getItem('nightMode') === 'true') {
                 document.body.classList.add('night-mode');
                 this.nightModeToggle.checked = true;
             }
         }
-        this.displayFiles();
 
         const saveButton = document.getElementById('saveButton');
         if (saveButton) {
-            saveButton.addEventListener('click', () => this.saveFile());
+            saveButton.addEventListener('click', this.saveFile.bind(this));
+        }
+
+        const addFileButton = document.getElementById('addFileButton');
+        if (addFileButton) {
+            addFileButton.addEventListener('click', this.showAddFileModal.bind(this));
         }
     }
 
