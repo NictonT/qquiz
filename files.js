@@ -40,6 +40,10 @@ class FileManager {
     }
 
     displayFiles() {
+        if (!this.filesContainer) {
+            console.error('Files container element not found');
+            return;
+        }
         this.filesContainer.innerHTML = '';
         const currentFolder = this.getCurrentFolder();
         const sortedFiles = currentFolder.slice().sort((a, b) => {
@@ -138,14 +142,16 @@ class FileManager {
     }
 
     addNewFile() {
-        const fileName = this.fileNameInput.value.trim();
+        const fileName = this.fileNameInput ? this.fileNameInput.value.trim() : '';
         if (fileName) {
             const currentFolder = this.getCurrentFolder();
             const newFile = { name: fileName, type: this.fileType.value, content: this.fileType.value === 'JSON' ? '' : [], id: this.generateUniqueId() };
             currentFolder.push(newFile);
             localStorage.setItem('files', JSON.stringify(this.files));
             this.displayFiles();
-            this.fileNameInput.value = '';
+            if (this.fileNameInput) {
+                this.fileNameInput.value = '';
+            }
             this.closeAddFileModal();
         } else {
             alert('File name cannot be empty.');
@@ -155,20 +161,23 @@ class FileManager {
     editFile(id) {
         const file = this.findFileById(this.files, id);
         if (file && file.type === 'JSON') {
-            document.getElementById('currentEditFileName').textContent = file.name;
-            document.getElementById('fileContent').value = file.content;
-            this.currentFile = file;
-            console.log('editFile - this.currentFile set to:', this.currentFile);
-            document.getElementById('filesPage').classList.add('hidden');
-            document.getElementById('editPage').classList.remove('hidden');
+            const currentEditFileName = document.getElementById('currentEditFileName');
+            const fileContentElement = document.getElementById('fileContent');
+            if (currentEditFileName && fileContentElement) {
+                currentEditFileName.textContent = file.name;
+                fileContentElement.value = file.content;
+                this.currentFile = file;
+                document.getElementById('filesPage').classList.add('hidden');
+                document.getElementById('editPage').classList.remove('hidden');
+            } else {
+                console.error('Edit elements not found');
+            }
         } else {
             alert('Unable to edit the selected file.');
         }
     }
 
     saveFile() {
-        console.log('saveFile: this =', this);
-        console.log('saveFile: currentFile =', this.currentFile);
         const fileContentElement = document.getElementById('fileContent');
         if (this.currentFile && fileContentElement) {
             this.currentFile.content = fileContentElement.value;
@@ -186,8 +195,8 @@ class FileManager {
     executeFile(id) {
         const file = this.findFileById(this.files, id);
         if (file && file.type === 'JSON') {
-            alert(`Executing the following content:
-${file.content}`);
+            localStorage.setItem('fileToExecute', JSON.stringify(file));
+            window.location.href = 'execute.html';
         } else if (file && file.type === 'Folder') {
             const contentToExecute = this.executeAllJsonInFolder(file);
             if (contentToExecute.length > 0) {
