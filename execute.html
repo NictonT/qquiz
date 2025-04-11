@@ -3,57 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Application</title>
-    <link rel="stylesheet" href="execute.css">
+    <title>Quiz Execution</title>
+    <!-- Link the single consolidated stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Optional: Add Font Awesome if you plan to use icons -->
+    <!-- <script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
+
+    <!-- Quiz Page -->
     <div id="quizPage" class="slide active">
         <div class="progress-container">
-            <div class="file-name" id="fileNameDisplay"></div>
+            <!-- Display file name if available -->
+            <div class="file-name" id="fileNameDisplay">Loading Quiz...</div>
             <div class="progress-bar">
                 <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
             </div>
-            <div class="question-count" id="questionCount"></div>
+            <div class="question-count" id="questionCount">0%</div>
         </div>
 
         <div class="question-card">
             <div id="questionArea">
+                <!-- Question text will be loaded here -->
                 <h2 id="questionText"></h2>
+                 <!-- Help button positioned relative to question-card -->
+                <button class="button secondary help-button" onclick="showAnswer()">?</button>
             </div>
+            <!-- Answers will be loaded here -->
             <div id="answersContainer"></div>
         </div>
 
         <div class="button-container">
-            <button class="button primary" id="submitButton" onclick="submitAnswer()">Submit</button>
+            <button class="button primary" id="submitButton" onclick="submitAnswer()" disabled>Submit</button>
             <button class="button secondary" id="skipButton" onclick="skipQuestion()">Skip</button>
-            <button class="button secondary help-button" onclick="showAnswer()">?</button>
+            <!-- Return to score page button might be needed if retrying single questions -->
+             <button class="button secondary hidden" id="returnToScoreButton" onclick="showResults()">Return to Score</button>
         </div>
     </div>
 
+    <!-- Result Page -->
     <div id="resultPage" class="slide hidden">
         <div class="result-content">
             <h2>Quiz Results</h2>
-            <div id="scoreText"></div>
-            <div id="scoreGraphics">
-                <div class="score-section">
+            <div id="scoreText">Calculating score...</div>
+             <div id="scoreGraphics">
+                <div class="score-section" onclick="toggleCorrectList()">
+                    <!-- Optional Icon
+                    <div class="score-icon correct">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    -->
                     <div class="score-label">Correct Answers</div>
-                    <div id="correctPercentage" class="circle-chart correct" onclick="toggleCorrectList()"></div>
+                    <div id="correctPercentage" class="circle-chart correct" data-count="0" style="--percentage: 0%;"></div>
                 </div>
-                <div class="score-section">
+                <div class="score-section" onclick="toggleWrongList()">
+                     <!-- Optional Icon
+                    <div class="score-icon wrong">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                     -->
                     <div class="score-label">Wrong/Skipped Answers</div>
-                    <div id="wrongPercentage" class="circle-chart wrong" onclick="toggleWrongList()"></div>
+                    <div id="wrongPercentage" class="circle-chart wrong" data-count="0" style="--percentage: 0%;"></div>
                 </div>
             </div>
-            <div id="correctList" class="answer-list hidden"></div>
-            <div id="wrongList" class="answer-list hidden"></div>
+            <!-- Correct answers list (initially hidden) -->
+            <div id="correctList" class="answer-list hidden">
+                <h3>Correct Answers</h3>
+                <!-- List items added by JS -->
+            </div>
+            <!-- Wrong/skipped answers list (initially hidden) -->
+            <div id="wrongList" class="answer-list hidden">
+                 <h3>Wrong/Skipped Answers</h3>
+                 <!-- List items added by JS -->
+            </div>
         </div>
         <div class="button-container">
             <button class="button primary" onclick="restartQuiz()">Restart Quiz</button>
-            <button class="button secondary" onclick="redoWrongAnswers()">Redo Wrong</button>
+            <button class="button secondary" id="redoWrongButton" onclick="redoWrongAnswers()">Redo Wrong</button>
             <button class="button secondary" onclick="goToHomePage()">Home Page</button>
         </div>
     </div>
 
+    <!-- Link the corrected JavaScript file -->
     <script src="execute.js"></script>
 </body>
 </html>
