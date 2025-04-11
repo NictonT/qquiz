@@ -1,3 +1,5 @@
+/* --- START OF FILE styles.css --- */
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 :root {
@@ -47,12 +49,12 @@ h2 {
 }
 
 /* Container & Slide Styles */
-.container {
+.container { /* Keep if used, otherwise optional */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .hidden {
-    display: none;
+    display: none !important; /* Use !important to ensure override if needed */
 }
 
 .slide {
@@ -64,7 +66,7 @@ h2 {
     width: 90%;
     box-shadow: var(--box-shadow);
     color: var(--text-color); /* Text color on slides */
-    transition: var(--slide-transition);
+    transition: var(--slide-transition), background-color 0.3s ease, color 0.3s ease; /* Combine transitions */
     transform: translateX(0);
     position: relative;
     overflow: hidden; /* To hide overflowing graphics */
@@ -74,13 +76,19 @@ body.night-mode .slide {
     background-color: #2c2c2c; /* Darker background for slides */
 }
 
+/* Slide Transitions (Adjust if needed, simple hide/show might be sufficient) */
 .slide.hidden {
-    transform: translateX(-100%);
+    /* Consider just using display: none via .hidden class */
+    /* transform: translateX(-100%); */
+    /* position: absolute; */ /* Might be needed depending on animation */
+    /* visibility: hidden; */
 }
 
 .slide.active {
     transform: translateX(0);
+    /* visibility: visible; */
 }
+
 
 /* Header & Toggle Styles */
 .header {
@@ -133,6 +141,26 @@ body.night-mode .slide {
     font-size: 14px;
 }
 
+/* Textarea Styles (Used on Index and Files Edit Page) */
+textarea {
+    width: calc(100% - 30px); /* Adjust padding calculation */
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 100px; /* Ensure minimum height */
+    background-color: rgba(255, 255, 255, 0.8);
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
+}
+
+body.night-mode textarea {
+    background-color: rgba(50, 50, 50, 0.8); /* Darker background for textarea */
+    color: var(--text-color);
+}
+
 /* Button Styles */
 .button {
     background-color: var(--primary-color);
@@ -142,9 +170,10 @@ body.night-mode .slide {
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
     box-shadow: var(--box-shadow);
     font-weight: 500;
+    margin: 5px; /* Add slight margin for spacing */
 }
 
 .button.secondary {
@@ -157,38 +186,125 @@ body.night-mode .slide {
 }
 
 body.night-mode .button {
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--box-shadow); /* Ensure night mode shadow is applied */
 }
+
+.button:disabled { /* Style for disabled buttons */
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+body.night-mode .button:disabled {
+    background-color: #555;
+    color: #aaa;
+}
+
 
 .button-container {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
     margin-top: 20px;
 }
 
-/* Content Styles */
+/* --- General Content --- */
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    /* height: 100%; */ /* Usually not needed with flexbox on body */
 }
 
-/* Question Area Styles */
-#questionArea {
+/* --- Quiz Execution Page Specific Styles --- */
+#quizPage .progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
-    position: relative; /* To position the help button */
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 15px;
+    border-radius: 5px;
 }
 
-/* Answers Container Styles */
-#answersContainer {
+body.night-mode #quizPage .progress-container {
+    background-color: rgba(50, 50, 50, 0.8);
+}
+
+#quizPage .progress-bar {
+    flex-grow: 1; /* Allow progress bar to take available space */
+    height: 10px;
+    background-color: rgba(200, 200, 200, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 15px; /* Add spacing around progress bar */
+}
+
+#quizPage .progress-bar-fill {
+    height: 100%;
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    width: 0%; /* Initial width */
+    transition: width 0.5s ease-out;
+    /* animation: animateProgress 2s ease-out forwards; Optional animation */
+}
+
+#quizPage .file-name {
+    font-size: 1rem; /* Adjusted size */
+    color: var(--secondary-color);
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if too long */
+    max-width: 150px; /* Limit width */
+    text-align: left;
+}
+
+body.night-mode #quizPage .file-name {
+    color: var(--secondary-color);
+}
+
+#quizPage .question-count {
+    font-size: 14px;
+    color: var(--text-color);
+    min-width: 40px; /* Ensure space for percentage */
+    text-align: right;
+}
+
+body.night-mode #quizPage .question-count {
+    color: var(--text-color);
+}
+
+
+#quizPage .question-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+    color: var(--text-color);
+    position: relative; /* For positioning help button */
+}
+
+body.night-mode #quizPage .question-card {
+    background-color: rgba(50, 50, 50, 0.9);
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
+}
+
+#quizPage #questionArea {
+    margin-bottom: 20px;
+    /* position: relative; No longer needed here, moved to card */
+}
+
+#quizPage #answersContainer {
     display: flex;
     flex-direction: column;
 }
 
-/* Answer Styles */
-.answer {
+#quizPage .answer {
     background-color: rgba(255, 255, 255, 0.9);
     border: none;
     border-radius: 8px;
@@ -200,154 +316,155 @@ body.night-mode .button {
     align-items: center;
     color: var(--text-color);
     box-shadow: var(--box-shadow);
+    text-align: left; /* Ensure text aligns left */
 }
 
-body.night-mode .answer {
+body.night-mode #quizPage .answer {
     background-color: rgba(50, 50, 50, 0.9);
     color: var(--text-color);
     box-shadow: var(--box-shadow);
 }
 
-.answer:hover {
-    background-color: rgba(255, 255, 255, 1);
+#quizPage .answer:hover {
+    /* background-color: rgba(240, 240, 240, 1); Slightly darker hover */
     transform: translateY(-2px);
 }
 
-body.night-mode .answer:hover {
+body.night-mode #quizPage .answer:hover {
     background-color: rgba(70, 70, 70, 0.9);
 }
 
-.answer.selected {
+#quizPage .answer.selected {
+    background-color: var(--secondary-color); /* Use secondary color for selected */
+    color: white;
+}
+
+body.night-mode #quizPage .answer.selected {
     background-color: var(--secondary-color);
     color: white;
 }
 
-body.night-mode .answer.selected {
+#quizPage .answer.correct {
+    background-color: rgba(76, 175, 80, 0.9); /* Slightly less transparent */
+    color: white;
+}
+
+#quizPage .answer.wrong {
+    background-color: rgba(244, 67, 54, 0.9); /* Slightly less transparent */
+    color: white;
+}
+
+#quizPage .help-button {
+    position: absolute;
+    top: 15px; /* Adjusted position */
+    right: 15px; /* Adjusted position */
     background-color: var(--secondary-color);
     color: white;
-}
-
-.answer.correct {
-    background-color: rgba(76, 175, 80, 0.8);
-    color: white;
-}
-
-.answer.wrong {
-    background-color: rgba(244, 67, 54, 0.8);
-    color: white;
-}
-
-/* Progress Container Styles */
-.progress-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border-radius: 5px;
-}
-
-body.night-mode .progress-container {
-    background-color: rgba(50, 50, 50, 0.8);
-}
-
-.progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: rgba(200, 200, 200, 0.8);
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background-color: var(--secondary-color);
-    border-radius: 5px;
-    width: 0%;
-    transition: width 0.5s ease-out;
-}
-
-.question-count {
-    font-size: 14px;
-    color: var(--text-color);
-}
-
-.question-card {
-    background-color: rgba(255, 255, 255, 0.9);
+    padding: 6px 10px; /* Slightly smaller */
     border: none;
-    border-radius: 10px;
-    padding: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: var(--box-shadow);
+    z-index: 10; /* Ensure it's above other content */
+}
+
+#quizPage .help-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+}
+
+body.night-mode #quizPage .help-button {
+    box-shadow: var(--box-shadow);
+}
+
+
+/* --- Results Page Specific Styles --- */
+#resultPage .result-content {
+    /* Styles specific to the container of results if needed */
+}
+
+#resultPage #scoreText {
+    font-size: 1.8em; /* Larger score text */
+    font-weight: 600;
     margin-bottom: 20px;
-    color: var(--text-color);
+    color: var(--primary-color);
 }
 
-body.night-mode .question-card {
-    background-color: rgba(50, 50, 50, 0.9);
-    color: var(--text-color);
-    box-shadow: var(--box-shadow);
+body.night-mode #resultPage #scoreText {
+     color: var(--primary-color);
 }
 
-/* Score Section, Icons, and Labels Styles */
-.score-section {
+#resultPage #scoreGraphics {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start; /* Align items to the top */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+#resultPage .score-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 10px;
+    cursor: pointer; /* Indicate clickable */
 }
 
-.score-icon {
-    font-size: 3em;
-    margin-bottom: 10px;
+#resultPage .score-icon { /* Optional: If using FontAwesome or similar */
+    font-size: 2.5em;
+    margin-bottom: 8px;
 }
 
-.score-icon.correct {
+#resultPage .score-icon.correct {
     color: #4CAF50;
 }
 
-.score-icon.wrong {
+#resultPage .score-icon.wrong {
     color: #F44336;
 }
 
-.score-label {
-    font-size: 16px;
+#resultPage .score-label {
+    font-size: 14px; /* Smaller label */
     color: var(--text-color);
+    margin-bottom: 10px; /* Space before chart */
 }
 
-/* Circle Chart Styles */
-.circle-chart {
+#resultPage .circle-chart {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     background-color: #eee;
     position: relative;
-    margin-bottom: 15px;
-    cursor: pointer;
+    /* margin-bottom: 15px; Removed, margin on section */
+    cursor: pointer; /* Reiterate clickable */
+    /* animation: animateCircle 2s ease-out forwards; Optional */
 }
 
-body.night-mode .circle-chart {
-    background-color: #2c2c2c;
+body.night-mode #resultPage .circle-chart {
+    background-color: #2c2c2c; /* Base background for night mode chart */
 }
 
-.circle-chart.correct {
-    background-image: conic-gradient(#4CAF50 var(--percentage), #eee 0);
+#resultPage .circle-chart.correct {
+    background-image: conic-gradient(#4CAF50 var(--percentage, 0%), #eee 0);
 }
 
-body.night-mode .circle-chart.correct {
-    background-image: conic-gradient(#4CAF50 var(--percentage), #2c2c2c 0);
+body.night-mode #resultPage .circle-chart.correct {
+    background-image: conic-gradient(#4CAF50 var(--percentage, 0%), #3a3a3a 0); /* Darker base */
 }
 
-.circle-chart.wrong {
-    background-image: conic-gradient(#F44336 var(--percentage), #eee 0);
+#resultPage .circle-chart.wrong {
+    background-image: conic-gradient(#F44336 var(--percentage, 0%), #eee 0);
 }
 
-body.night-mode .circle-chart.wrong {
-    background-image: conic-gradient(#F44336 var(--percentage), #2c2c2c 0);
+body.night-mode #resultPage .circle-chart.wrong {
+    background-image: conic-gradient(#F44336 var(--percentage, 0%), #3a3a3a 0); /* Darker base */
 }
 
-.circle-chart::before {
-    content: attr(data-count);
+#resultPage .circle-chart::before {
+    content: attr(data-count); /* Display the count */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -357,45 +474,305 @@ body.night-mode .circle-chart.wrong {
     color: var(--text-color);
 }
 
-/* Answer List Styles */
-.answer-list {
+body.night-mode #resultPage .circle-chart::before {
+     color: var(--text-color);
+}
+
+
+#resultPage .answer-list {
     list-style: none;
     padding: 0;
     text-align: left;
     margin-top: 15px;
+    max-height: 200px; /* Limit height and allow scrolling */
+    overflow-y: auto;
+    border: 1px solid rgba(0,0,0,0.1); /* Add subtle border */
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.5); /* Slight background */
 }
 
-body.night-mode .answer-list {
-    background-color: rgba(50, 50, 50, 0.8);
+body.night-mode #resultPage .answer-list {
+    background-color: rgba(50, 50, 50, 0.5);
+    border-color: rgba(255,255,255,0.1);
 }
 
-.answer-list li {
-    margin-bottom: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.8);
+#resultPage .answer-list li {
+    margin-bottom: 1px; /* Reduce margin */
+    /* border: 1px solid #ddd; Removed, border on container */
+    border-bottom: 1px solid rgba(0,0,0,0.05); /* Separator line */
+    border-radius: 0px; /* Remove border radius */
+    padding: 10px 15px;
+    background-color: transparent; /* Use container background */
     color: var(--text-color);
     cursor: pointer;
     display: flex;
     align-items: center;
+    transition: background-color 0.2s ease;
+}
+#resultPage .answer-list li:last-child {
+    border-bottom: none;
 }
 
-body.night-mode .answer-list li {
-    background-color: rgba(50, 50, 50, 0.8);
+
+body.night-mode #resultPage .answer-list li {
+    color: var(--text-color);
+    border-bottom-color: rgba(255,255,255,0.05);
+}
+
+#resultPage .answer-list li:hover {
+    background-color: rgba(200, 200, 200, 0.3);
+}
+
+body.night-mode #resultPage .answer-list li:hover {
+    background-color: rgba(70, 70, 70, 0.4);
+}
+
+#resultPage .indicator {
+    display: inline-block;
+    flex-shrink: 0; /* Prevent indicator from shrinking */
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#resultPage .indicator.correct {
+    background-color: #4CAF50; /* Green */
+}
+
+#resultPage .indicator.wrong {
+    background-color: #F44336; /* Red */
+}
+
+#resultPage .indicator.skipped {
+    background-color: #FFC107; /* Yellow */
+}
+
+/* --- Files Page Specific Styles --- */
+#filesPage #fileContentContainer {
+    height: 65vh; /* Adjusted height */
+    width: 100%;
+    overflow-y: auto;
+    margin-top: 15px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 10px; /* Add padding inside container */
+    box-sizing: border-box; /* Include padding in width/height */
+}
+
+body.night-mode #filesPage #fileContentContainer {
+    border-color: rgba(255,255,255,0.1);
+}
+
+#filesPage .control-panel {
+    display: flex;
+    justify-content: space-between; /* Space out controls */
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+#filesPage .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 18px; /* Adjusted padding */
+    margin-bottom: 8px; /* Reduced margin */
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+#filesPage .file-item > div:first-child { /* Target the div with name/icons */
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Allow name to take space */
+    margin-right: 10px; /* Space between name and buttons */
+    overflow: hidden; /* Hide overflow */
+}
+#filesPage .file-item > div:first-child > span { /* Target the name span */
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+     margin-right: 10px; /* Space before rename icon */
+}
+
+#filesPage .file-item > div:last-child { /* Target button container */
+    display: flex;
+    align-items: center;
+    flex-shrink: 0; /* Prevent buttons shrinking */
+}
+
+
+body.night-mode #filesPage .file-item {
+    background-color: rgba(50, 50, 50, 0.9);
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
+}
+
+#filesPage .file-item:hover {
+    background-color: rgba(245, 245, 245, 1); /* Lighter hover */
+    transform: translateY(-2px);
+}
+
+body.night-mode #filesPage .file-item:hover {
+    background-color: rgba(70, 70, 70, 0.9);
+}
+
+#filesPage .icon-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 1.1em; /* Slightly smaller icon */
+    margin-left: 8px; /* Reduced margin */
+    color: var(--text-color);
+    transition: color 0.3s ease;
+    line-height: 1; /* Ensure proper alignment */
+}
+
+body.night-mode #filesPage .icon-button {
     color: var(--text-color);
 }
 
-.answer-list li:hover {
-    background-color: rgba(200, 200, 200, 0.8);
+#filesPage .icon-button:hover {
+    color: var(--secondary-color);
 }
 
-body.night-mode .answer-list li:hover {
-    background-color: rgba(70, 70, 70, 0.8);
+#filesPage .file-item .button {
+    margin-left: 5px; /* Reduce button margin */
+    padding: 6px 12px; /* Smaller buttons */
+    font-size: 14px;
 }
 
-/* CSS Graphics  */
-.slide::before { 
+#filesPage .list-button {
+    /* margin-left: 10px; Spaced by flexbox now */
+    padding: 8px 15px; /* Adjust padding */
+}
+
+/* Back Button Specific Style (If needed outside header) */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    z-index: 10; /* Ensure visibility */
+}
+
+/* --- Edit File Page Specific Styles --- */
+#editPage #fileContent { /* Using the existing textarea style, maybe add height? */
+    min-height: 50vh; /* Ensure good height */
+    width: calc(100% - 30px); /* Match textarea style */
+}
+
+#editPage .file-name { /* Style for the filename display in header */
+     font-size: 0.8em; /* Smaller than h1 */
+     color: var(--secondary-color);
+     margin-left: 10px;
+     font-weight: normal;
+}
+
+#editPage .save-button { /* Add margin to save button */
+    margin-top: 15px;
+}
+
+
+/* --- Modal Styles --- */
+.modal {
+    display: none; /* Initially hidden */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+    z-index: 1000;
+    backdrop-filter: blur(3px); /* Optional blur effect */
+}
+
+.modal.active { /* Use a class to show modal */
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    min-width: 300px; /* Minimum width */
+    max-width: 90%;
+}
+
+body.night-mode .modal-content {
+    background-color: #2c2c2c; /* Match slide background */
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px; /* Larger close button */
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+body.night-mode .modal .close {
+    color: var(--text-color);
+}
+
+.modal .close:hover {
+    color: var(--secondary-color);
+}
+
+.modal label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.modal #fileType,
+.modal #fileNameInput,
+.modal #newFileNameInput {
+    display: block;
+    width: calc(100% - 22px); /* padding考慮 */
+    padding: 10px;
+    margin-bottom: 15px; /* Space below input */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: var(--text-color);
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+}
+
+body.night-mode .modal #fileType,
+body.night-mode .modal #fileNameInput,
+body.night-mode .modal #newFileNameInput {
+    background-color: rgba(50, 50, 50, 0.9);
+    color: var(--text-color);
+    border-color: #555;
+    box-shadow: inset 0px 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.modal .button { /* Spacing for modal buttons */
+    margin-top: 20px;
+}
+
+/* --- CSS Graphics (Optional Decorative Elements) --- */
+.slide::before {
     content: "";
     position: absolute;
     top: -50px;
@@ -403,93 +780,129 @@ body.night-mode .answer-list li:hover {
     width: 200px;
     height: 200px;
     background-color: var(--secondary-color);
-    opacity: 0.15;
+    opacity: 0.1; /* Reduced opacity */
     border-radius: 50%;
     z-index: -1;
+    pointer-events: none; /* Ignore for clicks */
 }
 
 .slide::after {
     content: "";
     position: absolute;
-    bottom: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
+    bottom: -70px; /* Adjusted position */
+    right: -70px;  /* Adjusted position */
+    width: 180px;  /* Adjusted size */
+    height: 180px; /* Adjusted size */
     background-color: var(--primary-color);
-    opacity: 0.15; 
+    opacity: 0.1; /* Reduced opacity */
     transform: rotate(45deg);
-    z-index: -1; 
+    z-index: -1;
+    pointer-events: none; /* Ignore for clicks */
+    border-radius: 30px; /* Add some rounding */
 }
 
 body.night-mode .slide::before {
     background-color: var(--secondary-color);
+     opacity: 0.15;
 }
 
 body.night-mode .slide::after {
     background-color: var(--primary-color);
+    opacity: 0.15;
 }
 
-/* Responsive Design */
+/* --- Responsive Design --- */
 @media (max-width: 768px) {
-    .slide {
-        max-width: 90%;
-        width: 90%;
+    h1 {
+        font-size: 2em;
     }
+    .slide {
+        padding: 30px;
+        width: 95%; /* Allow slightly less padding on sides */
+        max-width: 95%;
+    }
+    .button {
+        padding: 12px 18px;
+        font-size: 15px;
+    }
+    #filesPage .file-item {
+        flex-direction: column; /* Stack name and buttons */
+        align-items: stretch; /* Stretch items */
+    }
+     #filesPage .file-item > div:first-child {
+        margin-right: 0;
+        margin-bottom: 10px; /* Add space below name */
+     }
+     #filesPage .file-item > div:last-child {
+        justify-content: flex-end; /* Align buttons to the right */
+     }
+
+     #resultPage #scoreGraphics {
+        flex-direction: column; /* Stack charts */
+        align-items: center;
+     }
+      #quizPage .progress-container {
+        flex-wrap: wrap; /* Allow wrapping */
+      }
+      #quizPage .file-name {
+          max-width: 100px; /* Reduce max width further */
+      }
+
 }
 
-/* New Styles for Quiz Elements */
-.help-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 8px 12px; 
-    border: none;
-    border-radius: 5px; 
-    font-size: 14px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease; 
-    box-shadow: var(--box-shadow);
+@media (max-width: 480px) {
+    body {
+        align-items: flex-start; /* Align top on very small screens */
+        padding-top: 20px;
+    }
+     .slide {
+        padding: 20px;
+     }
+     h1 {
+        font-size: 1.8em;
+     }
+     .button-container {
+        flex-direction: column; /* Stack buttons */
+     }
+     .button {
+        width: 100%; /* Full width buttons */
+        box-sizing: border-box;
+        margin: 5px 0;
+     }
+     #quizPage .progress-bar {
+        margin: 5px 0; /* Adjust margins */
+        width: 100%; /* Take full width when wrapped */
+        order: 2; /* Change order if needed */
+     }
+      #quizPage .file-name {
+         order: 1;
+         width: 50%;
+         margin-bottom: 5px;
+      }
+       #quizPage .question-count {
+         order: 1;
+         width: 50%;
+          margin-bottom: 5px;
+       }
 }
 
-.help-button:hover {
-    transform: translateY(-2px); 
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.18);
+
+/* --- Animations (Optional - from styles(7).css) --- */
+@keyframes animateProgress {
+    from { width: 0%; }
+    /* 'to' value set dynamically via JS style change */
 }
 
-body.night-mode .help-button {
-    box-shadow: var(--box-shadow);
+/* Circle animation might be better handled by JS updating the --percentage variable */
+/*
+@keyframes animateCircle {
+    from { --percentage: 0%; }
+    to { --percentage: var(--target-percentage, 0%); }
 }
 
-.file-name {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: var(--secondary-color); 
-    text-align: left;
+.circle-chart {
+    animation: animateCircle 1.5s ease-out forwards;
 }
+*/
 
-body.night-mode .file-name {
-    color: var(--secondary-color);
-}
-
-/* Indicator Styles */
-.indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.indicator.correct {
-    background-color: #4CAF50; /* Green */
-}
-
-.indicator.wrong {
-    background-color: #F44336; /* Red */
-}
-
-.indicator.skipped {
-    background-color: #FFC107; /* Yellow */
-}
+/* --- END OF FILE styles.css --- */
